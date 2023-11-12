@@ -1,25 +1,31 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { WagmiProvider } from "wagmi";
+import ConnectWallet from "./components/ConnectWallet/ConnectWallet";
+import { http, createConfig } from "wagmi";
+import { mainnet, sepolia } from "wagmi/chains";
+import HookProvider from "./components/HookProvider/HookProvider";
+import { injected } from "wagmi/connectors";
+
+// @ts-ignore
+const config = createConfig({
+  chains: [mainnet, sepolia],
+  transports: {
+    [mainnet.id]: http(),
+    [sepolia.id]: http(),
+  },
+});
 
 function App() {
+  const queryClient = new QueryClient();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <WagmiProvider config={config}>
+      <QueryClientProvider client={queryClient}>
+        <HookProvider>
+          <ConnectWallet />
+        </HookProvider>
+      </QueryClientProvider>
+    </WagmiProvider>
   );
 }
 
