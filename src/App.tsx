@@ -3,8 +3,7 @@ import { WagmiProvider } from "wagmi";
 import ConnectWallet from "./components/ConnectWallet/ConnectWallet";
 import { http, createConfig } from "wagmi";
 import { mainnet, sepolia } from "wagmi/chains";
-import HookProvider from "./components/HookProvider/HookProvider";
-import { injected } from "wagmi/connectors";
+import { metaMask } from "wagmi/connectors";
 
 // @ts-ignore
 const config = createConfig({
@@ -13,6 +12,8 @@ const config = createConfig({
     [mainnet.id]: http(),
     [sepolia.id]: http(),
   },
+  connectors: [metaMask()],
+  multiInjectedProviderDiscovery: false,
 });
 
 function App() {
@@ -21,9 +22,7 @@ function App() {
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <HookProvider>
-          <ConnectWallet />
-        </HookProvider>
+        <ConnectWallet />
       </QueryClientProvider>
     </WagmiProvider>
   );

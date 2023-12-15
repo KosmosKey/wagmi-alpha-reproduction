@@ -25,11 +25,6 @@ const ConnectWallet = () => {
           }}
           onClick={() => connectAsync({ connector })}
         >
-          <img
-            src={connector.icon || ""}
-            style={{ maxWidth: "28px" }}
-            alt="eip6963"
-          />
           <p style={{ marginLeft: "12px" }}>{connector.name}</p>
         </button>
       ))}
